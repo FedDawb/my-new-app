@@ -26,7 +26,7 @@ function App() {
         </a>{" "}
         code hosted{" "}
         <a
-          href="https://github.com/FedDawb/VanillaWeatherProjecthttps://github.com/FedDawb/my-new-app"
+          href="https://github.com/FedDawb/my-new-app"
           target="_blank"
           rel="noreferrer"
         >
