@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useState} from "react";
 import Weather from "./Weather";
 import "./styles.css";
 
 function App() {
+  const[currentCity, setCurrentCity] = useState("");
+
   return (
     <div className="weather-app">
       <header>
-        <h1>Weather App</h1>
+         <Weather onCityChange={setCurrentCity}/>
+         <h1>{currentCity || "Search city"} </h1>
       </header>
       <main>
-        <Weather />
+ 
       </main>
       <footer>
         Built by{" "}
