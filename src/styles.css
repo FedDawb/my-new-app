@@ -91,8 +91,9 @@ main {
 }
 
 .weather-app-icon {
-    font-size: 70px;
+    font-size: 90px;
     margin-left: auto;
+    transition: transform 0.5s ease;
 }
 
 .weather-app-temperature {
