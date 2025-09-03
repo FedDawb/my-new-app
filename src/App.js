@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import Weather from "./Weather";
 import "./styles.css";
 
@@ -8,8 +8,7 @@ function App() {
   return (
     <div className="weather-app">
       <header>
-         <Weather onCityChange={setCurrentCity}/>
-         <h1>{currentCity || "Search city"} </h1>
+         <Weather city={setCurrentCity} onCityChange={setCurrentCity}/>
       </header>
       <main>
  
