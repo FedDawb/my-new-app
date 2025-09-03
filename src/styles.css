@@ -168,6 +168,27 @@ main {
   font-size: 18px;
 }
 
+.weather-forecast {
+  margin-top: 20px;
+}
+
+.forecast-cards {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.forecast-cards {
+  background: rgb(201, 200, 199);
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  min-width: 120px;        
+  flex: 0 0 auto;          
+}
+
 footer {
     border-top: 1px solid rgb(207, 205, 2050);
     padding: 10px 0 0 0;
