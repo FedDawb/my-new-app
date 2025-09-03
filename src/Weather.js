@@ -1,34 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function Weather({ onCityChange }) {
-  const [city, setCity] = useState("");
+export default function Weather({ city, onCityChange }) {
+  const [inputCity, setInputCity] = useState("");
   const [loaded, setLoaded] = useState(false);
   const [weather, setWeather] = useState({});
   const [unit, setUnit] = useState("C");
 
-  useEffect(() => {
-    const apiKey = "3fd91e83d21c4db97b409a3e896f8db6";
-
-    if(navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-          axios.get(apiUrl).then(displayWeather);
-        },
-        (error) => {
-          const defaultCity = "London";
-          const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-          axios.get(apiUrl).then(displayWeather);
-        }
-      );
-    }  else {
-      const defaultCity = "London";
+  useEffect(()=>{
+      const apiKey = "3fd91e83d21c4db97b409a3e896f8db6";
       const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
       axios.get(apiUrl).then(displayWeather);
-    }
-  }, []);
+    },[city]);
 
   function displayWeather(response) {
     setLoaded(true);
@@ -43,20 +26,13 @@ export default function Weather({ onCityChange }) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    if (onCityChange) {
-      onCityChange(city);
+    if (inputCity.trim() !== "") {
+      onCityChange(inputCity);
+      setInputCity("");
     }
-    
-    const apiKey = "3fd91e83d21c4db97b409a3e896f8db6";
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-    axios.get(apiUrl).then(displayWeather);
   }
 
-  function updateCity(event) {
-    setCity(event.target.value);
-  }
-
-  function toggleUnit() {
+   function toggleUnit() {
     setUnit(unit === "C" ? "F" : "C");
   }
 
@@ -65,7 +41,7 @@ export default function Weather({ onCityChange }) {
       ? Math.round(tempCelsius)
       :Math.round((tempCelsius * 9) / 5 + 32);
   }
-
+    
     return (
   <div className="weather-app">
     <div className="search-bar">
@@ -74,8 +50,9 @@ export default function Weather({ onCityChange }) {
         type="search"
         className="search-form-input"
         placeholder="Enter a city"
-        onChange={updateCity}
-      />
+        value={inputCity}
+        onChange={(e) => setInputCity(e.target.value)}/>
+    
 
       <button type="submit" className="search-form-button">
         Submit
@@ -92,7 +69,7 @@ export default function Weather({ onCityChange }) {
     
         <h1 className="weather-city">{city}</h1>
 
-         <div className="weather-temp">
+      <div className="weather-temp">
       <span style={{ fontSize: "48px", fontWeight: "bold" }}>
         {displayTemp(weather.temperature)}
       </span>

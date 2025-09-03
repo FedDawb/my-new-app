@@ -3,12 +3,12 @@ import Weather from "./Weather";
 import "./styles.css";
 
 function App() {
-  const[currentCity, setCurrentCity] = useState("");
+  const[currentCity, setCurrentCity] = useState("London");
 
   return (
     <div className="weather-app">
       <header>
-         <Weather city={setCurrentCity} onCityChange={setCurrentCity}/>
+         <Weather city={currentCity} onCityChange={setCurrentCity}/>
       </header>
       <main>
  
