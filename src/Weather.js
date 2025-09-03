@@ -5,13 +5,29 @@ export default function Weather({ city, onCityChange }) {
   const [inputCity, setInputCity] = useState("");
   const [loaded, setLoaded] = useState(false);
   const [weather, setWeather] = useState({});
+  const [forecast, setForcast] =useState([]);
   const [unit, setUnit] = useState("C");
 
   useEffect(()=>{
       const apiKey = "3fd91e83d21c4db97b409a3e896f8db6";
+
+      //current
       const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
       axios.get(apiUrl).then(displayWeather);
-    },[city]);
+   
+
+
+     // forecast
+     const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
+     axios.get(forecastUrl).then((response) => {
+      const dailyForecast = response.data.list.filter((item) =>
+        item.dt_txt.includes("12:00")
+    );
+     setForcast(dailyForecast);
+     });
+ },[city]);
+
+
 
   function displayWeather(response) {
     setLoaded(true);
@@ -86,8 +102,28 @@ export default function Weather({ city, onCityChange }) {
           <li>Humidity: {weather.humidity}%</li>
           <li>Wind: {weather.wind} km/h</li>
         </ul>
-      </div>
-    )}
-  </div>
-    );
-  }
+
+
+       {forecast.length > 0 && (
+        <div className="weather-forecast">
+          <h2>5 Day Forecast</h2>
+        <div className="forecast-cards">
+        {forecast.map((day) => (
+           <div key={day.dt} className="forecast-card">
+                    <p>{new Date(day.dt_txt).toLocaleDateString()}</p>
+                    <img
+                      src={`http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`}
+                      alt={day.weather[0].description}
+                    />
+                    <p>{Math.round(day.main.temp)}°C</p>
+                    <p>{day.weather[0].description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
