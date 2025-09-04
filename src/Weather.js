@@ -1,11 +1,25 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+
+const BG_BY_WEATHER = {
+  Clear: "/images/clear.png",
+  Clouds: "/images/clouds.png",
+  Rain: "/images/rainheavy.png",
+  Drizzle: "/images/rain.png",
+  Thunderstorm: "/images/storm.png",
+  Snow: "/images/snow.png",
+  Fog: "/images/foggy.png",
+  Mist: "/images/foggy.png",
+  Sun: "/images/sunny.png",
+};
+
 export default function Weather({ city, onCityChange }) {
   const [inputCity, setInputCity] = useState("");
   const [loaded, setLoaded] = useState(false);
   const [weather, setWeather] = useState({});
   const [forecast, setForcast] =useState([]);
+  const [bgClass, setBgClass] = useState("bg-clear");
   const [unit, setUnit] = useState("C");
 
   useEffect(()=>{
@@ -31,6 +45,9 @@ export default function Weather({ city, onCityChange }) {
 
   function displayWeather(response) {
     setLoaded(true);
+
+    const mainWeather = response.data.weather[0].main;
+
     setWeather({
       temperature: response.data.main.temp,
       wind: response.data.wind.speed,
@@ -38,6 +55,8 @@ export default function Weather({ city, onCityChange }) {
       icon: `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`,
       description: response.data.weather[0].description,
     });
+
+    setBgClass(BG_BY_WEATHER[mainWeather] || "/images/backgrounds/clear.jpg");
   }
 
   function handleSubmit(event) {
@@ -59,7 +78,16 @@ export default function Weather({ city, onCityChange }) {
   }
     
     return (
-  <div className="weather-app">
+<div
+  className="weather-app"
+  style={{
+    backgroundImage: `url(${bgClass})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    minHeight: "100vh",
+  }}
+>
+
     <div className="search-bar">
       <form onSubmit={handleSubmit} className="search-form">
         <input
@@ -110,7 +138,9 @@ export default function Weather({ city, onCityChange }) {
         <div className="forecast-cards">
         {forecast.map((day) => (
            <div key={day.dt} className="forecast-card">
-                    <p>{new Date(day.dt_txt).toLocaleDateString()}</p>
+                    <p>{new Date(day.dt_txt).toLocaleDateString(undefined, { weekday: "short"})}
+                      
+                    </p>
                     <img
                       src={`http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`}
                       alt={day.weather[0].description}
