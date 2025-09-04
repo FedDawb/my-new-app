@@ -21,17 +21,24 @@ export default function Weather({ city, onCityChange }) {
   const [forecast, setForcast] =useState([]);
   const [bgClass, setBgClass] = useState("bg-clear");
   const [unit, setUnit] = useState("C");
+  const [dateTime, setDateTime] = useState(new Date());
+
+  //timedate
+  useEffect(() => {
+    const timer = setInterval(() => setDateTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(()=>{
       const apiKey = "3fd91e83d21c4db97b409a3e896f8db6";
 
-      //current
+      //current weath
       const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
       axios.get(apiUrl).then(displayWeather);
    
 
 
-     // forecast
+     // forcast
      const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
      axios.get(forecastUrl).then((response) => {
       const dailyForecast = response.data.list.filter((item) =>
@@ -112,7 +119,23 @@ export default function Weather({ city, onCityChange }) {
         </div>
     
         <h1 className="weather-city">{city}</h1>
+        
 
+        <p style={{ fontSize: "16px", opacity: 0.8 }}>
+            {dateTime.toLocaleDateString(undefined, {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}{" "}
+            {dateTime.toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+            })}
+          </p>
+
+       
       <div className="weather-temp">
       <span style={{ fontSize: "48px", fontWeight: "bold" }}>
         {displayTemp(weather.temperature)}

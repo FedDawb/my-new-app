@@ -222,14 +222,15 @@ main {
     gap: 15px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
+    padding-bottom: 10px;
     scroll-snap-type: x mandatory; /* snap effect */
   }
 
-  .forecast-card {
-    flex: 0 0 80%;
-    max-width: 250px;
-    scroll-snap-align: center; /* snap each card */
-  }
+ .forecast-card {
+  flex: 0 0 calc(33.33% - 15px); 
+  min-width: 200px;              
+  scroll-snap-align: start;
+}
 
   /* Hide scrollbar for cleaner UI */
   .forecast-cards::-webkit-scrollbar {
