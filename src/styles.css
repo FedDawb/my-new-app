@@ -8,10 +8,11 @@ a {
 }
 
 .weather-app {
-    max-width: 900px;
+    max-width: 1500px;
+    max-height: 90%;
     margin: 30px auto;
     box-shadow: 0 30px 50px rgba(65, 50, 100, 0.08);
-    padding: 30px;
+    padding: 40px;
     border-radius: 16px;
     background: rgba(255, 255, 255, 0.25); /* frosted glass */
     backdrop-filter: blur(10px);
@@ -173,14 +174,26 @@ main {
   margin-top: 20px;
 }
 
+/* Outer container */
 .forecast-cards {
   display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding-bottom: 10px;
+  justify-content: center;
+  gap: 20px;
+  overflow-x: hidden;
+  
 }
 
+/* 5-column grid for desktop and websites */
+
 .forecast-cards {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.forecast-card {
   background: rgb(224, 215, 196);
   padding: 15px;
   border-radius: 12px;
@@ -194,6 +207,36 @@ main {
   transform: translateY(-8px); 
 }
 
+/* Tablet: 3-column grid */
+@media (max-width: 1024px) {
+  .forecast-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Mobile: scrollable 1 card at a time */
+@media (max-width: 768px) {
+  .forecast-cards {
+    display: flex;
+    overflow-x: auto;
+    gap: 15px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scroll-snap-type: x mandatory; /* snap effect */
+  }
+
+  .forecast-card {
+    flex: 0 0 80%;
+    max-width: 250px;
+    scroll-snap-align: center; /* snap each card */
+  }
+
+  /* Hide scrollbar for cleaner UI */
+  .forecast-cards::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 .weather-results,
 .weather-forecast,
 .forecast-card {
@@ -201,9 +244,9 @@ main {
   backdrop-filter: blur(10px);           
   -webkit-backdrop-filter: blur(10px);   
   border-radius: 15px;
-  padding: 20px;
+  padding: 10px;
   margin: 10px auto;
-  max-width: 600px;
+  max-width: 1000px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); 
 }
 
@@ -278,5 +321,9 @@ footer {
   padding: 0;
   font-size: 18px;
   line-height: 1.6;
+}
+
+.weather-app .current-weather {
+    margin-bottom: 30px;
 }
 
